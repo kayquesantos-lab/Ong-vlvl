@@ -1,0 +1,35 @@
+name: CI — Testes Automatizados
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  testes:
+    name: Rodar pytest
+    runs-on: ubuntu-latest
+
+    env:
+      SECRET_KEY: "chave-secreta-apenas-para-ci"
+      DEBUG: "True"
+      ALLOWED_HOSTS: "localhost"
+      DATABASE_URL: "sqlite:///test.db"
+      CORS_ALLOWED_ORIGINS: "http://localhost:3000"
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar testes
+        run: pytest animais/tests/ -v
