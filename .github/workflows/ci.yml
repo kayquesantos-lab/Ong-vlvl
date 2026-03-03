@@ -1,4 +1,4 @@
-name: CI — Testes Automatizados
+name: CI - Testes Automatizados
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       CORS_ALLOWED_ORIGINS: "http://localhost:3000"
 
     steps:
-      - name: Checkout do código
+      - name: Checkout do codigo
         uses: actions/checkout@v4
 
       - name: Configurar Python 3.12
@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar dependências
+      - name: Instalar dependencias
         run: pip install -r requirements.txt
 
       - name: Rodar testes
