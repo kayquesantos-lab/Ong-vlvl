@@ -4,6 +4,7 @@ coverage==7.13.4
 Django==6.0.2
 django-cors-headers==4.9.0
 django-environ==0.13.0
+django-filter==25.1
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.29.0
@@ -14,6 +15,7 @@ jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
 model-bakery==1.23.3
 packaging==26.0
+Pillow==11.2.1
 pluggy==1.6.0
 psycopg2-binary==2.9.11
 Pygments==2.19.2

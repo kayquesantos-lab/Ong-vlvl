@@ -28,6 +28,11 @@ class Animal(models.Model):
     observacoes     = models.TextField(blank=True, default="")
     criado_em       = models.DateTimeField(auto_now_add=True)
     atualizado_em   = models.DateTimeField(auto_now=True)
+    aparencia       = models.TextField(blank=True, default="")
+    comportamento   = models.TextField(blank=True, default="")
+    foto            = models.ImageField(upload_to='animais/', null=True, blank=True)
+
+    
 
     class Meta:
         ordering = ["nome"]
