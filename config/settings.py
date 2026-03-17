@@ -112,6 +112,10 @@ CORS_ALLOWED_ORIGINS = env.list(
     default=["http://localhost:3000"]
 )
 
+AUTHENTICATION_BACKENDS = [
+    'usuarios.backends.AprovacaoBackend',
+]
+
 AUTH_USER_MODEL = "usuarios.Usuario"
 
 import os
