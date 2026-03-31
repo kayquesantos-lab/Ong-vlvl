@@ -10,11 +10,11 @@ type Animal = {
 }
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
-  NO_ABRIGO:    { bg: 'rgba(64,191,193,0.1)', color: '#40BFC1' },
-  ADOTADO:      { bg: '#DBEAFE',              color: '#3B82F6' },
-  FALECIDO:     { bg: '#FEE2E2',              color: '#EF4444' },
-  DESAPARECIDO: { bg: '#FEF3C7',              color: '#F59E0B' },
-  LT:           { bg: '#F3E8FF',              color: '#A855F7' },
+  NO_ABRIGO: { bg: 'rgba(64,191,193,0.1)', color: '#40BFC1' },
+  ADOTADO: { bg: '#DBEAFE', color: '#3B82F6' },
+  FALECIDO: { bg: '#FEE2E2', color: '#EF4444' },
+  DESAPARECIDO: { bg: '#FEF3C7', color: '#F59E0B' },
+  LT: { bg: '#F3E8FF', color: '#A855F7' },
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -22,14 +22,14 @@ const STATUS_LABELS: Record<string, string> = {
   DESAPARECIDO: 'Desaparecido', LT: 'Lar Temporário',
 }
 
-const SEXO_LABELS: Record<string, string>  = { M: 'Macho', F: 'Fêmea' }
+const SEXO_LABELS: Record<string, string> = { M: 'Macho', F: 'Fêmea' }
 const PORTE_LABELS: Record<string, string> = { PEQUENO: 'Pequeno', MEDIO: 'Médio', GRANDE: 'Grande' }
 
 export default function AnimaisPage() {
   const router = useRouter()
-  const [animais, setAnimais]     = useState<Animal[]>([])
-  const [loading, setLoading]     = useState(true)
-  const [filters, setFilters]     = useState({ status: '', porte: '', sexo: '', search: '' })
+  const [animais, setAnimais] = useState<Animal[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState({ status: '', porte: '', sexo: '', search: '' })
   const [showModal, setShowModal] = useState(false)
   const [editAnimal, setEditAnimal] = useState<Animal | null>(null)
   const [viewAnimal, setViewAnimal] = useState<Animal | null>(null)
@@ -47,15 +47,15 @@ export default function AnimaisPage() {
     try {
       const params = new URLSearchParams()
       if (filters.status) params.append('status', filters.status)
-      if (filters.porte)  params.append('porte',  filters.porte)
-      if (filters.sexo)   params.append('sexo',   filters.sexo)
+      if (filters.porte) params.append('porte', filters.porte)
+      if (filters.sexo) params.append('sexo', filters.sexo)
       if (filters.search) params.append('search', filters.search)
       const { data } = await api.get(`/animais/?${params}`)
-      if (Array.isArray(data))         setAnimais(data)
+      if (Array.isArray(data)) setAnimais(data)
       else if (Array.isArray(data.results)) setAnimais(data.results)
       else setAnimais([])
     } catch { setAnimais([]) }
-    finally  { setLoading(false) }
+    finally { setLoading(false) }
   }
 
   useEffect(() => { fetchAnimais() }, [filters])
@@ -107,12 +107,12 @@ export default function AnimaisPage() {
       if (form.fotoFile) fd.append('foto', form.fotoFile)
       const cfg = { headers: { 'Content-Type': 'multipart/form-data' } }
       if (editAnimal) await api.put(`/animais/${editAnimal.id}/`, fd, cfg)
-      else            await api.post('/animais/', fd, cfg)
+      else await api.post('/animais/', fd, cfg)
       setShowModal(false); fetchAnimais()
     } catch { setFormErrors({ general: 'Erro ao salvar. Verifique os dados.' }) }
   }
 
-  const paginated  = animais.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  const paginated = animais.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const totalPages = Math.max(1, Math.ceil(animais.length / PER_PAGE))
 
   const selectStyle: React.CSSProperties = {
@@ -152,9 +152,9 @@ export default function AnimaisPage() {
             <p style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', letterSpacing: '1.2px', textTransform: 'uppercase', padding: '0 12px', marginBottom: '16px' }}>PELUDOS</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {[
-                { icon: '🐾', label: 'Cadastro de Animais', active: true,  href: '/animais' },
-                { icon: '💊', label: 'Saúde dos animais',   active: false, href: '/saude'   },
-                { icon: '📄', label: 'Exportação de dados', active: false, href: '#'        },
+                { icon: '🐾', label: 'Cadastro de Animais', active: true, href: '/animais' },
+                { icon: '💊', label: 'Saúde dos animais', active: false, href: '/saude' },
+                { icon: '📄', label: 'Exportação de dados', active: false, href: '#' },
               ].map(item => (
                 <div key={item.label} onClick={() => router.push(item.href)}
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', backgroundColor: item.active ? 'rgba(64,191,193,0.1)' : 'transparent', color: item.active ? '#40BFC1' : '#334155', fontWeight: item.active ? 600 : 500, fontSize: '14px', borderRight: item.active ? '4px solid #40BFC1' : '4px solid transparent' }}>
@@ -168,11 +168,10 @@ export default function AnimaisPage() {
             <p style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', letterSpacing: '1.2px', textTransform: 'uppercase', padding: '0 12px', marginBottom: '16px' }}>CONTROLE FINANCEIRO</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {[
-                { icon: '📋', label: 'Lançamento de contas'   },
-                { icon: '💳', label: 'Registro de pagamentos' },
-                { icon: '📊', label: 'Listagem por status'    },
+                { icon: '📋', label: 'Lançamento de contas', href: '/financeiro', active: false },
               ].map(item => (
-                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontSize: '14px', fontWeight: 500 }}>
+                <div key={item.label} onClick={() => router.push(item.href)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontSize: '14px', fontWeight: 500, borderRight: '4px solid transparent' }}>
                   <span>{item.icon}</span> {item.label}
                 </div>
               ))}
@@ -274,12 +273,12 @@ export default function AnimaisPage() {
               <thead>
                 <tr style={{ backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
                   {[
-                    { label: 'FOTO',   w: '96px'  },
-                    { label: 'NOME',   w: '137px' },
-                    { label: 'PORTE',  w: '157px' },
-                    { label: 'SEXO',   w: '106px' },
-                    { label: 'STATUS', w: '92px'  },
-                    { label: 'AÇÕES',  w: '165px', right: true },
+                    { label: 'FOTO', w: '96px' },
+                    { label: 'NOME', w: '137px' },
+                    { label: 'PORTE', w: '157px' },
+                    { label: 'SEXO', w: '106px' },
+                    { label: 'STATUS', w: '92px' },
+                    { label: 'AÇÕES', w: '165px', right: true },
                   ].map(h => (
                     <th key={h.label} style={{ padding: '16px 24px', textAlign: h.right ? 'right' : 'left', fontSize: '12px', fontWeight: 700, color: '#64748B', letterSpacing: '0.6px', textTransform: 'uppercase', width: h.w }}>
                       {h.label}
@@ -549,12 +548,12 @@ export default function AnimaisPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
               {[
-                { label: 'SEXO',         value: SEXO_LABELS[viewAnimal.sexo] || viewAnimal.sexo },
-                { label: 'PORTE',        value: PORTE_LABELS[viewAnimal.porte] || viewAnimal.porte },
-                { label: 'CASTRADO',     value: (viewAnimal as any).castrado ? 'Sim' : 'Não' },
-                { label: 'NASCIMENTO',   value: (viewAnimal as any).data_nascimento || 'Não informado' },
-                { label: 'CADASTRADO',   value: (viewAnimal as any).criado_em ? new Date((viewAnimal as any).criado_em).toLocaleDateString('pt-BR') : '—' },
-                { label: 'ATUALIZADO',   value: (viewAnimal as any).atualizado_em ? new Date((viewAnimal as any).atualizado_em).toLocaleDateString('pt-BR') : '—' },
+                { label: 'SEXO', value: SEXO_LABELS[viewAnimal.sexo] || viewAnimal.sexo },
+                { label: 'PORTE', value: PORTE_LABELS[viewAnimal.porte] || viewAnimal.porte },
+                { label: 'CASTRADO', value: (viewAnimal as any).castrado ? 'Sim' : 'Não' },
+                { label: 'NASCIMENTO', value: (viewAnimal as any).data_nascimento || 'Não informado' },
+                { label: 'CADASTRADO', value: (viewAnimal as any).criado_em ? new Date((viewAnimal as any).criado_em).toLocaleDateString('pt-BR') : '—' },
+                { label: 'ATUALIZADO', value: (viewAnimal as any).atualizado_em ? new Date((viewAnimal as any).atualizado_em).toLocaleDateString('pt-BR') : '—' },
               ].map(item => (
                 <div key={item.label} style={{ backgroundColor: '#F8FAFC', borderRadius: '8px', padding: '12px' }}>
                   <div style={{ fontSize: '10px', fontWeight: 700, color: '#94A3B8', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '4px' }}>{item.label}</div>

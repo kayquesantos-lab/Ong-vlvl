@@ -228,11 +228,10 @@ export default function SaudePage() {
                         <p style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', letterSpacing: '1.2px', textTransform: 'uppercase', padding: '0 12px', marginBottom: '16px' }}>CONTROLE FINANCEIRO</p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                             {[
-                                { icon: '📋', label: 'Lançamento de contas' },
-                                { icon: '💳', label: 'Registro de pagamentos' },
-                                { icon: '📊', label: 'Listagem por status' },
+                                { icon: '📋', label: 'Lançamento de contas', href: '/financeiro', active: false },
                             ].map(item => (
-                                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontSize: '14px', fontWeight: 500 }}>
+                                <div key={item.label} onClick={() => router.push(item.href)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontSize: '14px', fontWeight: 500, borderRight: '4px solid transparent' }}>
                                     <span>{item.icon}</span> {item.label}
                                 </div>
                             ))}
