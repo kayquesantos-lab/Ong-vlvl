@@ -5,12 +5,39 @@ from rest_framework.response import Response
 from .models import Usuario
 from .serializers import UsuarioPublicoSerializer, UsuarioAdminSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from django.core.exceptions import PermissionDenied
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 def is_admin(user):
     return user.is_authenticated and (user.role == 'ADMIN' or user.is_superuser)
+
+
+class TokenComAprovacaoView(TokenObtainPairView):
+    """
+    Estende o /token/ padrao para retornar 403 com codigo claro
+    quando o usuario existe e a senha esta correta, mas a conta
+    nao foi aprovada pelo admin. Mantem 401 para credenciais invalidas.
+    """
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        if username and password:
+            try:
+                usuario = Usuario.objects.get(username=username)
+                if usuario.check_password(password) and not usuario.is_superuser and not usuario.aprovado:
+                    return Response(
+                        {
+                            'code': 'pending_approval',
+                            'detail': 'Sua conta ainda aguarda aprovacao do administrador.',
+                        },
+                        status=status.HTTP_403_FORBIDDEN,
+                    )
+            except Usuario.DoesNotExist:
+                pass
+
+        return super().post(request, *args, **kwargs)
 
 
 @api_view(['POST'])

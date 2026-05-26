@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-surface-muted text-ink font-sans;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
+  }
+
+  /* Smooth transitions by default em itens interativos */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    @apply transition-all duration-200;
+  }
+}
+
+@layer components {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.line.DEFAULT') transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-line rounded-full;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-line-strong;
+  }
+
+  /* Card com hover sutil para virar interativo */
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.12);
+  }
+
+  /* Botao com shimmer no hover */
+  .shimmer-hover {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    transition: none;
+    pointer-events: none;
+  }
+  .shimmer-hover:hover::after {
+    animation: shimmer 0.7s ease forwards;
+  }
+
+  /* Pulsar sutil pra chamar atencao em alertas */
+  .pulse-soft {
+    animation: pulseSoft 2.4s ease-in-out infinite;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply bg-line-subtle rounded relative overflow-hidden;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.65),
+      transparent
+    );
+    animation: skeletonShimmer 1.6s infinite;
+  }
+}
+
+@layer utilities {
+  /* Stagger helpers: aplique stagger-children no container e os filhos animam em sequencia */
+  .stagger-children > * {
+    opacity: 0;
+    animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .stagger-children > *:nth-child(1) { animation-delay: 0.02s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.05s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.08s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.11s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.14s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.17s; }
+  .stagger-children > *:nth-child(7) { animation-delay: 0.20s; }
+  .stagger-children > *:nth-child(8) { animation-delay: 0.23s; }
+  .stagger-children > *:nth-child(9) { animation-delay: 0.26s; }
+  .stagger-children > *:nth-child(10) { animation-delay: 0.29s; }
+  .stagger-children > *:nth-child(n+11) { animation-delay: 0.32s; }
+
+  /* Animacao continua de patinhas flutuando no fundo */
+  .float-slow {
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-slower {
+    animation: float 9s ease-in-out infinite;
+  }
+}
+
+/* ─── KEYFRAMES ─────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop {
+  0%   { opacity: 0; transform: scale(0.7); }
+  60%  { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.0); }
+  50%      { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.15); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(4deg); }
+}
+
+@keyframes shimmer {
+  to { left: 150%; }
+}
+
+@keyframes skeletonShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes spinSmooth {
+  to { transform: rotate(360deg); }
+}
+
+/* Animacao do gradiente do background (auth page) */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* Wiggle sutil (icones de erro) */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-8deg); }
+  75%      { transform: rotate(8deg); }
+}

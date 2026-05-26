@@ -151,8 +151,8 @@ def exportar_animais_csv(request):
     response["Content-Disposition"] = 'attachment; filename="animais.csv"'
     response.write("\ufeff")
 
-    writer = csv.writer(response)
-    writer.writerow(["ID", "Nome", "Raça", "Sexo", "Porte", "Status", "Castrado"])
+    writer = csv.writer(response, delimiter=";")
+    writer.writerow(["ID", "Nome", "Sexo", "Porte", "Status", "Castrado", "Nascimento"])
 
     SEXO = {"M": "Macho", "F": "Fêmea"}
     PORTE = {"PEQUENO": "Pequeno", "MEDIO": "Médio", "GRANDE": "Grande"}
@@ -169,11 +169,11 @@ def exportar_animais_csv(request):
             [
                 f"VL-{str(animal.id).zfill(3)}",
                 animal.nome,
-                animal.raca or "",
-                SEXO.get(animal.sexo, animal.sexo),
-                PORTE.get(animal.porte, animal.porte),
+                SEXO.get(animal.sexo, animal.sexo or "—"),
+                PORTE.get(animal.porte, animal.porte or "—"),
                 STATUS.get(animal.status, animal.status),
-                "Sim" if getattr(animal, "castrado", False) else "Não",
+                "Sim" if animal.castrado else "Não",
+                animal.data_nascimento.strftime("%d/%m/%Y") if animal.data_nascimento else "—",
             ]
         )
     return response
