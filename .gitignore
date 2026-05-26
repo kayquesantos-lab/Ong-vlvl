@@ -5,7 +5,17 @@ __pycache__/
 *.pyo
 db.sqlite3
 media/
+staticfiles/
 frontend/node_modules/
 frontend/.next/
 frontend/.env.local
+frontend/out/
 *.log
+
+# Editor / IDE / local
+.claude/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
