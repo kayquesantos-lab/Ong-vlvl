@@ -12,7 +12,9 @@ interface ConfigComRetry extends AxiosRequestConfig {
   _retryCount?: number
 }
 
-const api = axios.create({ baseURL: 'http://localhost:8000/api' })
+const api = axios.create({ 
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://ong-vlvl-production-3439.up.railway.app'
+})
 
 // ─── INTERCEPTOR DE REQUEST ───────────────────────────────────────────────────
 api.interceptors.request.use(
@@ -65,7 +67,7 @@ api.interceptors.response.use(
         try {
           config._retry = true
           const { data } = await axios.post(
-            'http://localhost:8000/api/token/refresh/',
+            `${process.env.NEXT_PUBLIC_API_URL || 'https://ong-vlvl-production-3439.up.railway.app'}/api/token/refresh/`,
             { refresh }
           )
           Cookies.set('access_token', data.access, { secure: true, sameSite: 'strict' })
