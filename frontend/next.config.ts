@@ -1,5 +1,13 @@
 import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {}
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http',  hostname: 'localhost' },
+    ],
+  },
+  serverExternalPackages: ['js-cookie'],
+}
 
 export default nextConfig
