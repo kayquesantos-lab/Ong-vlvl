@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-//proteção de rotas
+
+export const runtime = 'experimental-edge'
+
 const PUBLIC_ROUTES = ['/login', '/cadastro']
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
   const token = request.cookies.get('access_token')?.value
-  const isPublic = PUBLIC_ROUTES.includes(request.nextUrl.pathname)
+  const isPublic = PUBLIC_ROUTES.includes(pathname)
 
   if (!token && !isPublic) {
     return NextResponse.redirect(new URL('/login', request.url))
@@ -20,6 +23,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.ico|.*\\.webp).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp)).*)',
   ],
 }
