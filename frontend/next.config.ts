@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
       { protocol: 'http',  hostname: 'localhost' },
     ],
   },
-  serverExternalPackages: ['js-cookie'],
 }
 
 export default nextConfig
