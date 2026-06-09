@@ -1,17 +1,17 @@
 import type { NextConfig } from 'next'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
-      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'http',  hostname: 'localhost' },
     ],
   },
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'recharts'],
-  },
-  // Impede que módulos Node.js sejam bundlados no middleware (Edge Runtime)
-  serverExternalPackages: ['axios', 'js-cookie'],
 }
 
 export default nextConfig
