@@ -1,22 +1,19 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PROTECTED = ['/animais', '/saude', '/financeiro', '/usuarios']
-const PUBLIC    = ['/login', '/cadastro']
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('access_token')?.value
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
-  const hasToken = req.cookies.has('access_token')
+  const isLoginPage = request.nextUrl.pathname === '/login'
 
-  const isProtected = PROTECTED.some(r => pathname.startsWith(r))
-  const isPublic    = PUBLIC.some(r => pathname.startsWith(r))
-
-  if (isProtected && !hasToken) {
-    return NextResponse.redirect(new URL('/login', req.url))
+  // 🚫 Não logado → manda pro login
+  if (!token && !isLoginPage) {
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (isPublic && hasToken) {
-    return NextResponse.redirect(new URL('/animais', req.url))
+  // ✅ Logado → não deixa voltar pro login
+  if (token && isLoginPage) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return NextResponse.next()
@@ -24,11 +21,12 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/animais/:path*',
-    '/saude/:path*',
-    '/financeiro/:path*',
-    '/usuarios/:path*',
-    '/login',
-    '/cadastro',
+    /*
+     * Aplica em tudo EXCETO:
+     * - api
+     * - _next
+     * - arquivos estáticos
+     */
+    '/((?!api|_next|favicon.ico).*)',
   ],
 }
