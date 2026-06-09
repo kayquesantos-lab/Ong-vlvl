@@ -6,28 +6,17 @@ const PUBLIC_ROUTES = ['/login', '/cadastro']
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname.includes('.')
-  ) {
-    return NextResponse.next()
-  }
-
   const token = request.cookies.get('access_token')?.value
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
+  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname === route)
 
-  // Sem token → login
   if (!token && !isPublicRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Com token na raiz → redireciona pra home real
   if (token && pathname === '/') {
     return NextResponse.redirect(new URL('/animais', request.url))
   }
 
-  // Com token tentando acessar rota pública → home real
   if (token && isPublicRoute) {
     return NextResponse.redirect(new URL('/animais', request.url))
   }
@@ -36,5 +25,15 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)',],
+  matcher: [
+    /*
+     * Exclui explicitamente:
+     * - _next/static (arquivos estáticos)
+     * - _next/image (otimização de imagem)
+     * - favicon.ico
+     * - arquivos com extensão (ex: .png, .js, .css)
+     * - rotas /api/*
+     */
+    '/((?!_next/static|_next/image|favicon\\.ico|api/|.*\\.[^/]*$).*)',
+  ],
 }
