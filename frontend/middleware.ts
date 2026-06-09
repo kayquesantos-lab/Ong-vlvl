@@ -1,24 +1,21 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-export const runtime = 'edge'
 
 const PUBLIC_ROUTES = ['/login', '/cadastro']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-
   const token = request.cookies.get('access_token')?.value
-  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname === route)
 
-  if (!token && !isPublicRoute) {
+  const isPublic = PUBLIC_ROUTES.some(route => pathname.startsWith(route))
+
+  // Não autenticado tentando acessar rota protegida → vai para login
+  if (!token && !isPublic) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (token && pathname === '/') {
-    return NextResponse.redirect(new URL('/animais', request.url))
-  }
-
-  if (token && isPublicRoute) {
+  // Autenticado tentando acessar login/cadastro → vai para animais
+  if (token && isPublic) {
     return NextResponse.redirect(new URL('/animais', request.url))
   }
 
@@ -26,15 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Exclui explicitamente:
-     * - _next/static (arquivos estáticos)
-     * - _next/image (otimização de imagem)
-     * - favicon.ico
-     * - arquivos com extensão (ex: .png, .js, .css)
-     * - rotas /api/*
-     */
-    '/((?!_next/static|_next/image|favicon\\.ico|api/|.*\\.[^/]*$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|logo.png).*)'],
 }
