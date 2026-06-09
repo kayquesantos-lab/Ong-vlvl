@@ -19,7 +19,7 @@ if (!BASE_URL && typeof window !== 'undefined') {
 }
 
 const api = axios.create({
-  baseURL: BASE_URL || 'https://ong-vlvl-teste-production.up.railway.app/api',
+  baseURL: BASE_URL || 'https://ong-vlvl-production-ca1e.up.railway.app/api',
 })
 
 function isAuthEndpoint(url?: string) {
