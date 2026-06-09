@@ -7,10 +7,11 @@ const nextConfig: NextConfig = {
       { protocol: 'http', hostname: 'localhost' },
     ],
   },
-  // Isola o bundle do middleware do resto da aplicação
   experimental: {
     optimizePackageImports: ['lucide-react', 'recharts'],
   },
+  // Impede que módulos Node.js sejam bundlados no middleware (Edge Runtime)
+  serverExternalPackages: ['axios', 'js-cookie'],
 }
 
 export default nextConfig
