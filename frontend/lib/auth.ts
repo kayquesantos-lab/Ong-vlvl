@@ -2,7 +2,7 @@ import api, { getCookie, setCookie, removeCookie } from './api'
 
 export async function login(username: string, password: string): Promise<void> {
   try {
-    const data = await api.post<{ access: string; refresh: string }>('/token/', {
+    const { data } = await api.post<{ access: string; refresh: string }>('/token/', {
       username,
       password,
     })
