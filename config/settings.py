@@ -14,7 +14,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list(
     'ALLOWED_HOSTS',
-    default=['localhost', '127.0.0.1', 'ong-vlvl-production-ca1e.up.railway.app],
+    default=['localhost', '127.0.0.1', 'ong-vlvl-production-ca1e.up.railway.app'],
 )
 
 
