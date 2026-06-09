@@ -46,12 +46,18 @@ interface RequestOptions extends RequestInit {
   _retry?: boolean
 }
 
+// ─── Tipo de resposta (compatível com a interface do axios) ───────────────────
+
+export interface ApiResponse<T> {
+  data: T
+}
+
 // ─── Fetch com autenticação, refresh e retry ──────────────────────────────────
 
 async function apiFetch<T = unknown>(
   path: string,
   options: RequestOptions = {}
-): Promise<T> {
+): Promise<ApiResponse<T>> {
   const url = `${BASE_URL}${path}`
   const { _retryCount = 0, _retry = false, ...fetchOptions } = options
 
@@ -66,8 +72,9 @@ async function apiFetch<T = unknown>(
   // Sucesso
   if (res.ok) {
     // 204 No Content não tem body
-    if (res.status === 204) return undefined as T
-    return res.json() as Promise<T>
+    if (res.status === 204) return { data: undefined as T }
+    const data = await res.json()
+    return { data }
   }
 
   const status = res.status
