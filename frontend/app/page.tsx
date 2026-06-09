@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation'
-
+// frontend/app/page.tsx
 export default function RootPage() {
-  redirect('/login')
+  return null // O middleware cuida do redirect
 }
